@@ -28,7 +28,7 @@ eat_out:           .word     0  /* output value */
 stay_in:           .word     0  /* output value */
 eat_ice_cream:     .word     0  /* output value */
 we_have_a_problem: .word     0  /* output value */
-
+    
  /* Tell the assembler that what follows is in instruction memory    */
 .text
 .align
@@ -66,7 +66,60 @@ asmFunc:
 .endif
     
     /*** STUDENTS: Place your code BELOW this line!!! **************/
-
+    
+    mov r10,0 
+    mov r11,1
+    ldr r6,= we_have_a_problem
+    str r10,[r6]
+    ldr r6,= eat_out
+    str r10,[r6]
+    ldr r6,= stay_in
+    str r10,[r6]
+    ldr r6,= eat_ice_cream
+    str r10,[r6]
+    ldr r3,= balance	//storing balance address in r3
+    ldr r8,[r3]
+    ldr r1,=transaction	   //stroing transaction address in r1
+    str r0,[r1]		   // storing transation value in r0
+    
+    cmp r0,1000		   
+    bgt not_acceptable
+    cmp r0,-1000
+    blt not_acceptable
+    
+    
+    adds r4,r0,r8
+    
+    bvs not_acceptable
+    
+    str r4,[r3]
+    cmp r4,0
+    bgt balance_greater_0
+    blt balance_lesser_0
+    
+    ldr r6,= eat_ice_cream
+    str r11,[r6]
+    b doneBalance
+    
+    not_acceptable:
+	ldr r2,=we_have_a_problem
+	str r10,[r1]
+	str r11,[r2]
+	mov r0,r8
+	b done
+    
+    balance_greater_0:
+	ldr r6,=eat_out
+	str r11,[r6]
+	b doneBalance
+	
+    balance_lesser_0:
+	ldr r6,= stay_in
+	str r11,[r6]
+	b doneBalance
+	
+    doneBalance:
+	ldr r0,[r3]
     
     /*** STUDENTS: Place your code ABOVE this line!!! **************/
 
