@@ -69,7 +69,11 @@ asmFunc:
     
     mov r10,0 
     mov r11,1
+    
+    /* setting output variables to 0 */
     ldr r6,= we_have_a_problem
+    str r10,[r6]
+    ldr r6,= transaction
     str r10,[r6]
     ldr r6,= eat_out
     str r10,[r6]
@@ -77,21 +81,24 @@ asmFunc:
     str r10,[r6]
     ldr r6,= eat_ice_cream
     str r10,[r6]
-    ldr r3,= balance	//storing balance address in r3
-    ldr r8,[r3]
-    ldr r1,=transaction	   //stroing transaction address in r1
-    str r0,[r1]		   // storing transation value in r0
     
+    
+    ldr r3,= balance	//storing balance address in r3
+    ldr r8,[r3]		   //storing balance value in r8
+    ldr r1,=transaction	   //stroing transaction address in r1
+    str r0,[r1]		   // storing transation value to r0
+    
+    /* checking whether the transation value is between 1000 and -1000 or not*/
     cmp r0,1000		   
     bgt not_acceptable
     cmp r0,-1000
     blt not_acceptable
     
-    
+    /** adding transation value and balance into r4, temBalance**/
     adds r4,r0,r8
-    
     bvs not_acceptable
     
+    /** cheching whether balance is greater than 0 or not **/
     str r4,[r3]
     cmp r4,0
     bgt balance_greater_0
@@ -101,6 +108,7 @@ asmFunc:
     str r11,[r6]
     b doneBalance
     
+    /** bracnches**/
     not_acceptable:
 	ldr r2,=we_have_a_problem
 	str r10,[r1]
