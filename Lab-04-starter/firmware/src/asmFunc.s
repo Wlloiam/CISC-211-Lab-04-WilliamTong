@@ -70,7 +70,7 @@ asmFunc:
     mov r10,0 
     mov r11,1
     
-    /* setting output variables to 0 */
+    /* set output variables to 0 */
     ldr r6,= we_have_a_problem
     str r10,[r6]
     ldr r6,= transaction
@@ -81,7 +81,6 @@ asmFunc:
     str r10,[r6]
     ldr r6,= eat_ice_cream
     str r10,[r6]
-    
     
     ldr r3,= balance	//storing balance address in r3
     ldr r8,[r3]		   //storing balance value in r8
@@ -98,7 +97,7 @@ asmFunc:
     adds r4,r0,r8
     bvs not_acceptable
     
-    /** cheching whether balance is greater than 0 or not **/
+    /** checking whether balance is greater than 0 or not **/
     str r4,[r3]
     cmp r4,0
     bgt balance_greater_0
