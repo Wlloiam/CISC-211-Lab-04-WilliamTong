@@ -66,21 +66,20 @@ asmFunc:
 .endif
     
     /*** STUDENTS: Place your code BELOW this line!!! **************/
-    
-    mov r10,0 
-    mov r11,1
+    mov r10,0			  //storing 0 in r10 to modify the outputs later
+    mov r11,1			  //storing 1 in r11 to modify the outputs later
     
     /* set output variables to 0 */
-    ldr r6,= we_have_a_problem
-    str r10,[r6]
-    ldr r6,= transaction
-    str r10,[r6]
-    ldr r6,= eat_out
-    str r10,[r6]
-    ldr r6,= stay_in
-    str r10,[r6]
-    ldr r6,= eat_ice_cream
-    str r10,[r6]
+    ldr r6,= we_have_a_problem	//storing address of we_hava_a_problem in r6
+    str r10,[r6]		//storing 0 to we_hava_a_problem
+    ldr r6,= transaction	//storing address of transaction in r6
+    str r10,[r6]		//storing 0 to transaction
+    ldr r6,= eat_out		//storing address of eat_out in r6
+    str r10,[r6]		//storing 0 to eat_out
+    ldr r6,= stay_in		//storing address of stay_in in r6
+    str r10,[r6]		//storing 0 to stay_in
+    ldr r6,= eat_ice_cream	//storing address of eat_ice_cream in r6
+    str r10,[r6]		//storing 0 to eat_ice_cream
     
     ldr r3,= balance	//storing balance address in r3
     ldr r8,[r3]		   //storing balance value in r8
@@ -88,45 +87,50 @@ asmFunc:
     str r0,[r1]		   // storing transation value to r0
     
     /* checking whether the transation value is between 1000 and -1000 or not*/
-    cmp r0,1000		   
-    bgt not_acceptable
-    cmp r0,-1000
-    blt not_acceptable
+    cmp r0,1000		   //checking transation is greater than 1000 or not by using cmp
+    bgt not_acceptable	   //if transation is greater than 1000 the program will direct to the not_acceptable branch
+    cmp r0,-1000	   //checking transation is lower than 1000 or not by using cmp
+    blt not_acceptable	   //if transation is lower than -1000 the program will direct to the not_acceptable branch
     
     /** adding transation value and balance into r4, temBalance**/
-    adds r4,r0,r8
-    bvs not_acceptable
+    adds r4,r0,r8	    //if the transation is between 1000 and -1000, store the result of adding transaction and balance in r4, which will be served as tmpBalance
+    bvs not_acceptable	    //if the result in r4 is overflow, the program will direct to not_acceptable branch
     
     /** checking whether balance is greater than 0 or not **/
-    str r4,[r3]
-    cmp r4,0
-    bgt balance_greater_0
-    blt balance_lesser_0
+    str r4,[r3]		    //store the adding result, r4, in balance
+    cmp r4,0		    //comparing the r4 with 0
+    bgt balance_greater_0   //if r4 is greater than 0, the program will direct to balance_greater_0 branch
+    blt balance_lesser_0    //if r4 is lower than 0, the program will direct to balance_lesser_0 branch
     
-    ldr r6,= eat_ice_cream
-    str r11,[r6]
+    ldr r6,= eat_ice_cream  //storing the address of eat_ice_cream in r6
+    str r11,[r6]	    //storing 1 to eat_ice_cream
     b doneBalance
     
     /** bracnches**/
-    not_acceptable:
-	ldr r2,=we_have_a_problem
-	str r10,[r1]
-	str r11,[r2]
-	mov r0,r8
-	b done
+    /** This branch will run if the transaction is greater than 1000 or lower than -1000 or if there is an overflow in when adding
+	balance and transaction **/
+    not_acceptable:			    //declaring not_acceptable branch
+	ldr r2,=we_have_a_problem	    //storing the address of we_have_a_problem in r2 to modify
+	str r10,[r1]			    //storing 0 to transaction
+	str r11,[r2]			    //storing 1 to we_have_a_problem
+	mov r0,r8			    //storing balance in r0
+	b done				    //done for not_acceptable branches
     
-    balance_greater_0:
-	ldr r6,=eat_out
-	str r11,[r6]
-	b doneBalance
+    /**This branch will run if the balance is greater than 0**/
+    balance_greater_0:			    //declaring balance_greater_0 branch
+	ldr r6,=eat_out			    //storing the address of eat_out in r6 to modify
+	str r11,[r6]			    //storing 1 to the value of eat_out
+	b doneBalance			    //done for balance_greater_0 branch
 	
-    balance_lesser_0:
-	ldr r6,= stay_in
-	str r11,[r6]
-	b doneBalance
-	
+    /**This branch will run if the balance is leeser than 0**/
+    balance_lesser_0:			    //declaring balance_lesser_0 branch
+	ldr r6,= stay_in		    //storing the address of stay_in in r6 to modify
+	str r11,[r6]			    //storing 1 to the value of stay_in
+	b doneBalance			    //done for balance_lesser_0
+    
+    /** This is the final branch after running this branch the program will stop**/
     doneBalance:
-	ldr r0,[r3]
+	ldr r0,[r3]			    ///store the transation in balance
     
     /*** STUDENTS: Place your code ABOVE this line!!! **************/
 
